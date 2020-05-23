@@ -3,7 +3,7 @@
   the title is {{ title }}
 </p>
 
-<input [value]="generateTitle()">
-
+<input [value]="title"
+       (keyup.enter)="changeTitle($any($event.target).value)">
 
 <button>Save</button>
