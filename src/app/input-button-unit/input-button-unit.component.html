@@ -1,17 +1,17 @@
 <form [formGroup]="formGroup" (submit)="changeTitle()">
   <label>
     Name
-    <input formControlName="name" required type="text">
+    <input formControlName="name" required type="text" class="todo-input">
     <span *ngIf="isInvalidControl(formGroup.controls.name)">Name is required</span>
   </label>
 
   <label>
     Due Date
-    <input formControlName="dueDate" required type="date">
+    <input formControlName="dueDate" required type="date" class="todo-input">
     <span *ngIf="isInvalidControl(formGroup.controls.dueDate)">Due Date is required</span>
   </label>
 
-  <button type="submit" [disabled]="formGroup.invalid">
+  <button type="submit" [disabled]="formGroup.invalid" class="btn">
     Save
   </button>
 </form>

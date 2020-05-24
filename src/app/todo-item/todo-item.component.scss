@@ -1,7 +1,13 @@
 .app-item {
   $app-li-margin: 10px;
 
-  margin: $app-li-margin 0;
+  padding: 10px 0;
+  border-top: solid 1px #ddd;
+  vertical-align: middle;
+  min-height: 30px;
+  line-height: 30px;
+  display: flex;
+  justify-content: left;
 
   .app-item-due-date {
     background: antiquewhite;
@@ -9,6 +15,7 @@
     padding: $app-li-margin/3 $app-li-margin;
     margin-left: $app-li-margin;
     border-radius: 10px;
+    justify-content: center;
   }
 
   &.app-item-delayed {
@@ -18,4 +25,14 @@
       font-weight: bold;
     }
   }
+}
+
+.todo-checkbox {
+  flex-shrink: 0;
+  margin: auto 1ex auto 0;
+}
+
+.todo-title {
+  flex-grow: 1;
+  padding-left: 11px;
 }

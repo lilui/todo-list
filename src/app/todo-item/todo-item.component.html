@@ -1,4 +1,4 @@
-<li *ngIf="item" class="app-item" [class.app-item-delayed]="isItemDelayed()">
+<div *ngIf="item" class="app-item" [class.app-item-delayed]="isItemDelayed()">
   <span>{{ item.title }}</span>
   <span class="app-item-due-date">{{ item.dueDate | date:'shortDate' }}</span>
-</li>
+</div>
