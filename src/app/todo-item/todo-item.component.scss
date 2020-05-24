@@ -1,4 +1,4 @@
-li {
+.app-item {
   $app-li-margin: 10px;
 
   margin: $app-li-margin 0;
@@ -9,5 +9,13 @@ li {
     padding: $app-li-margin/3 $app-li-margin;
     margin-left: $app-li-margin;
     border-radius: 10px;
+  }
+
+  &.app-item-delayed {
+    .app-item-due-date {
+      background: #cb3937;
+      color: #f2f2fa;
+      font-weight: bold;
+    }
   }
 }
