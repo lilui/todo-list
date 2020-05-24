@@ -1,5 +1,19 @@
-<div *ngIf="item" class="app-item" [class.app-item-delayed]="isItemDelayed()">
-  <span>{{ item.title }}</span>
-  <span class="app-item-due-date">{{ item.dueDate | date:'shortDate' }}</span>
-  <button class="btn btn-red" (click)="removeItem()">Remove</button>
+<div *ngIf="item"
+     class="app-item"
+     [class.app-item-delayed]="isItemDelayed()">
+  <input type="checkbox"
+         class="todo-checkbox"
+         (click)="completeItem()"
+         [checked]="item.completed">
+  <span class="todo-title"
+        [class.todo-complete]="item.completed">
+    {{ item.title }}
+  </span>
+  <span class="app-item-due-date">
+    {{ item.dueDate | date:'shortDate' }}
+  </span>
+  <button class="btn btn-red"
+          (click)="removeItem()">
+    Remove
+  </button>
 </div>
