@@ -1,21 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TodoItem } from '../interfaces/todo-item';
+import { TodoListService } from '../service/todo-list/todo-list.service';
 
 @Component({
   selector: 'app-list-manager',
   templateUrl: './list-manager.component.html',
-  styleUrls: ['./list-manager.component.scss']
+  styleUrls: ['./list-manager.component.scss'],
 })
-export class ListManagerComponent {
+export class ListManagerComponent implements OnInit {
 
-  constructor() { }
+  todoList: TodoItem[] = [];
 
-  todoList: TodoItem[] = [
-    {title: 'install NodeJS', dueDate: new Date('2020-05-23')},
-  ];
+  constructor(private todoListService: TodoListService) {
+
+  }
 
   todoItemCreate(todoItem: TodoItem): void {
-    this.todoList.push(todoItem);
+    this.todoListService.todoItemCreate(todoItem);
+  }
+
+  public ngOnInit(): void {
+    this.todoList = this.todoListService.getTodoList();
   }
 
 }

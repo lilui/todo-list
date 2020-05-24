@@ -20,7 +20,6 @@ import { ListManagerComponent } from './list-manager/list-manager.component';
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
