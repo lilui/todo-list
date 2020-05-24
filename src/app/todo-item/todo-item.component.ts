@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoItem } from '../interfaces/todo-item';
 import { UtilityService } from '../service/utility/utility.service';
 
@@ -11,8 +11,9 @@ export class TodoItemComponent {
 
   @Input() item: TodoItem | undefined;
 
-  private readonly today = new Date();
+  @Output() remove = new EventEmitter<TodoItem>();
 
+  private readonly today = new Date();
 
   constructor(private utilityService: UtilityService) {
 
@@ -22,4 +23,7 @@ export class TodoItemComponent {
     return this.item !== undefined && this.utilityService.isDateBefore(this.item.dueDate, this.today);
   }
 
+  removeItem() {
+    this.remove.emit(this.item);
+  }
 }

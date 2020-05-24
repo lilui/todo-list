@@ -1,13 +1,13 @@
 <form [formGroup]="formGroup" (submit)="changeTitle()">
   <label>
     Name
-    <input formControlName="name" required type="text" class="todo-input">
+    <input formControlName="name" required type="text">
     <span *ngIf="isInvalidControl(formGroup.controls.name)">Name is required</span>
   </label>
 
   <label>
     Due Date
-    <input formControlName="dueDate" required type="date" class="todo-input">
+    <input formControlName="dueDate" required type="date">
     <span *ngIf="isInvalidControl(formGroup.controls.dueDate)">Due Date is required</span>
   </label>
 

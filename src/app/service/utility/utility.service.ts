@@ -20,11 +20,13 @@ export class UtilityService {
   public isDateBefore(value1: any, value2: any): boolean {
     const date1 = new Date(value1);
     if (isNaN(date1.getTime())) {
+      console.log('warning this is not a number');
       return false;
     }
 
     const date2 = new Date(value2);
     if (isNaN(date2.getTime())) {
+      console.log('warning this is not a number');
       return false;
     }
 
