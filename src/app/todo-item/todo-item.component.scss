@@ -1,0 +1,13 @@
+li {
+  $app-li-margin: 10px;
+
+  margin: $app-li-margin 0;
+
+  .app-item-due-date {
+    background: antiquewhite;
+    font-size: small;
+    padding: $app-li-margin/3 $app-li-margin;
+    margin-left: $app-li-margin;
+    border-radius: 10px;
+  }
+}

@@ -1,1 +1,4 @@
-<span *ngIf="item"> {{ item.title }} {{ item.dueDate | date:'short' }}</span>
+<li *ngIf="item">
+  <span>{{ item.title }}</span>
+  <span class="app-item-due-date">{{ item.dueDate | date:'shortDate' }}</span>
+</li>

@@ -9,12 +9,7 @@ import {TodoItem} from './interfaces/todo-item';
 export class AppComponent {
   title = 'todo-list';
   todoList: TodoItem[] = [
-    {title: 'install NodeJS'},
-    {title: 'install Angular CLI'},
-    {title: 'create new app'},
-    {title: 'serve app'},
-    {title: 'develop app'},
-    {title: 'deploy app'},
+    {title: 'install NodeJS', dueDate: new Date('2020-05-23')},
   ];
 
   todoItemCreate(todoItem: TodoItem): void {
