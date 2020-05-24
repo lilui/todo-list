@@ -1,5 +1,5 @@
 export interface TodoItem {
   title: string;
-  dueDate: Date;
+  dueDate: Date | string;
   completed?: boolean;
 }

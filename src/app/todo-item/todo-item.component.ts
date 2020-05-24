@@ -19,11 +19,7 @@ export class TodoItemComponent {
   }
 
   public isItemDelayed(): boolean {
-    if (this.item) {
-      const dueDate = new Date(this.item.dueDate);
-      return this.utilityService.isDateBefore(dueDate, this.today);
-    }
-    return false;
+    return this.item !== undefined && this.utilityService.isDateBefore(this.item.dueDate, this.today);
   }
 
 }

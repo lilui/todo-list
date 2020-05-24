@@ -17,9 +17,19 @@ export class UtilityService {
     return String(value);
   }
 
-  public isDateBefore(date1: Date, date2: Date): boolean {
+  public isDateBefore(value1: any, value2: any): boolean {
+    const date1 = new Date(value1);
+    if (isNaN(date1.getTime())) {
+      return false;
+    }
+
+    const date2 = new Date(value2);
+    if (isNaN(date2.getTime())) {
+      return false;
+    }
+
     return date1.getFullYear() < date2.getFullYear() ||
-    date1.getMonth() < date2.getMonth() ||
-    date1.getDate() < date2.getDate();
+      date1.getMonth() < date2.getMonth() ||
+      date1.getDate() < date2.getDate();
   }
 }
