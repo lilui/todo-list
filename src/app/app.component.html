@@ -2,9 +2,4 @@
   Welcome to {{ title }}!
 </h1>
 
-<app-input-button-unit (todoItemCreate)="todoItemCreate($event)"></app-input-button-unit>
-
-<ul>
-  <app-todo-item *ngFor="let todoItem of todoList" [item]="todoItem"></app-todo-item>
-</ul>
-
+<app-list-manager></app-list-manager>

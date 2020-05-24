@@ -1,0 +1,6 @@
+
+<app-input-button-unit (todoItemCreate)="todoItemCreate($event)"></app-input-button-unit>
+
+<ul>
+  <app-todo-item *ngFor="let todoItem of todoList" [item]="todoItem"></app-todo-item>
+</ul>
