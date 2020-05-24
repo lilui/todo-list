@@ -1,4 +1,4 @@
-# TodoList
+# TodoList ![ngGirls Badge](https://raw.githubusercontent.com/ng-girls/todo-list-tutorial/master/.gitbook/assets/nggirls-badge.png)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.0-rc.0.
 
