@@ -8,7 +8,7 @@ import {TodoItem} from '../interfaces/todo-item';
 })
 export class TodoItemComponent implements OnInit {
 
-  @Input() item: TodoItem;
+  @Input() item: TodoItem | undefined;
 
   constructor() { }
 

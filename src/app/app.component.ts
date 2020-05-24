@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {TodoItem} from './interfaces/todo-item';
 
 @Component({
@@ -16,4 +16,8 @@ export class AppComponent {
     {title: 'develop app'},
     {title: 'deploy app'},
   ];
+
+  todoItemCreate(todoItem: TodoItem): void {
+    this.todoList.push(todoItem);
+  }
 }

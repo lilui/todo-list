@@ -1,8 +1,17 @@
-<input #inputElementRef
-       (keyup.enter)="changeTitle($any($event.target).value)"
-       [value]="title">
+<form [formGroup]="formGroup" (submit)="changeTitle()">
+  <label>
+    Name
+    <input formControlName="name" required type="text">
+    <span *ngIf="isInvalidControl(formGroup.controls.name)">Name is required</span>
+  </label>
+  <label>
+    Due Date
+    <input formControlName="dueDate" required type="date">
+    <span *ngIf="isInvalidControl(formGroup.controls.dueDate)">Due Date is required</span>
+  </label>
 
-<button (click)="changeTitle(inputElementRef.value)">
-  Save
-</button>
 
+  <button type="submit" [disabled]="formGroup.invalid">
+    Save
+  </button>
+</form>
