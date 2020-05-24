@@ -7,6 +7,9 @@
          [checked]="item.completed">
   <span class="todo-title"
         [class.todo-complete]="item.completed">
+    <!-- TODO: enable editing through clicking on title -->
+    <!-- TODO: *ngIf (click) change element <input> to <app-input-button-unit> -->
+    <!-- TODO: catch submit event and update the title -->
     {{ item.title }}
   </span>
   <span class="app-item-due-date">
