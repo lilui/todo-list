@@ -13,12 +13,17 @@ export class TodoItemComponent {
 
   private readonly today = new Date();
 
+
   constructor(private utilityService: UtilityService) {
 
   }
 
   public isItemDelayed(): boolean {
-    return this.item !== undefined && this.utilityService.isDateBefore(this.item.dueDate, this.today);
+    if (this.item) {
+      const dueDate = new Date(this.item.dueDate);
+      return this.utilityService.isDateBefore(dueDate, this.today);
+    }
+    return false;
   }
 
 }
