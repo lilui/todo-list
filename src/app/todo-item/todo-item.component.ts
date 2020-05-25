@@ -17,6 +17,7 @@ export class TodoItemComponent {
   @Output() update = new EventEmitter<TodoItemChange>();
 
   private readonly today = new Date();
+  editBool = false;
 
   constructor(private utilityService: UtilityService) {
 
@@ -40,5 +41,9 @@ export class TodoItemComponent {
       changes: {completed: !this.item.completed},
     });
 
+  }
+
+  editItem() {
+    this.editBool = true;
   }
 }

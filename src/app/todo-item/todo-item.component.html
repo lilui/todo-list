@@ -6,12 +6,17 @@
          (click)="completeItem()"
          [checked]="item.completed">
   <span class="todo-title"
-        [class.todo-complete]="item.completed">
+        [class.todo-complete]="item.completed"
+        (click)="editItem()"
+        *ngIf="editBool; else elseBlock">
     <!-- TODO: enable editing through clicking on title -->
     <!-- TODO: *ngIf (click) change element <input> to <app-input-button-unit> -->
     <!-- TODO: catch submit event and update the title -->
     {{ item.title }}
   </span>
+  <ng-template #elseBlock>
+    <app-input-button-unit></app-input-button-unit>
+  </ng-template>
   <span class="app-item-due-date">
     {{ item.dueDate | date:'shortDate' }}
   </span>
