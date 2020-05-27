@@ -1,8 +1,8 @@
-<form [formGroup]="formGroup" (submit)="changeTitle()">
+<form [formGroup]="formGroup" (submit)="save()">
   <label>
     Name
     <input formControlName="name" required type="text">
-    <span *ngIf="isInvalidControl(formGroup.controls.name)">
+    <span *ngIf="hasErrorMessage(formGroup.controls.name)">
       Name is required
     </span>
   </label>
@@ -10,7 +10,7 @@
   <label>
     Due Date
     <input formControlName="dueDate" required type="date">
-    <span *ngIf="isInvalidControl(formGroup.controls.dueDate)">
+    <span *ngIf="hasErrorMessage(formGroup.controls.dueDate)">
       Due Date is required
     </span>
   </label>

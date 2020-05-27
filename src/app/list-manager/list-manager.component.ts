@@ -12,22 +12,28 @@ export class ListManagerComponent implements OnInit {
   todoList: TodoItem[] = [];
 
   constructor(private todoListService: TodoListService) {
-
   }
 
-  todoItemCreate(todoItem: TodoItem): void {
-    this.todoListService.todoItemCreate(todoItem);
-  }
-
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.todoList = this.todoListService.getTodoList();
   }
 
-  removeItem(item: TodoItem) {
-    this.todoListService.deleteItem(item);
+  createItem(todoItem: TodoItem | undefined): void {
+    if (todoItem) {
+      this.todoListService.createItem(todoItem);
+    }
   }
 
-  updateItem(item: TodoItem, changes: { completed: boolean }) {
-    this.todoListService.updateItem(item, changes);
+  updateItem(todoItem: TodoItem | undefined) {
+    if (todoItem) {
+      this.todoListService.updateItem(todoItem);
+    }
   }
+
+  removeItem(todoItem: TodoItem | undefined) {
+    if (todoItem) {
+      this.todoListService.deleteItem(todoItem);
+    }
+  }
+
 }

@@ -1,24 +1,24 @@
-<div *ngIf="item"
+<div *ngIf="todoItem as todoItemValue"
      class="app-item"
      [class.app-item-delayed]="isItemDelayed()">
   <input type="checkbox"
          class="todo-checkbox"
-         (click)="completeItem()"
-         [checked]="item.completed">
-  <span class="todo-title"
-        [class.todo-complete]="item.completed"
-        (click)="editItem()"
-        *ngIf="editBool; else elseBlock">
+         (click)="toggleItemComplete()"
+         [checked]="todoItemValue.completed">
+  <span *ngIf="!isItemEditEnabled; else itemEditView"
+        class="todo-title"
+        [class.todo-complete]="todoItemValue.completed"
+        (click)="enableItemEdit()">
     <!-- TODO: enable editing through clicking on title -->
     <!-- TODO: *ngIf (click) change element <input> to <app-input-button-unit> -->
     <!-- TODO: catch submit event and update the title -->
-    {{ item.title }}
+    {{ todoItemValue.title }}
   </span>
-  <ng-template #elseBlock>
-    <app-input-button-unit></app-input-button-unit>
+  <ng-template #itemEditView>
+    <app-input-button-unit [todoItem]="todoItem" (todoItemChange)="onTodoItemChange($event)"></app-input-button-unit>
   </ng-template>
   <span class="app-item-due-date">
-    {{ item.dueDate | date:'shortDate' }}
+    {{ todoItemValue.dueDate | date:'shortDate' }}
   </span>
   <button class="btn btn-red"
           (click)="removeItem()">

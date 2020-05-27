@@ -5,7 +5,12 @@ import { StorageService } from '../storage/storage.service';
 const todoListStorageKey = 'Todo_List';
 
 const defaultTodoList: TodoItem[] = [
-  {title: 'install NodeJS', dueDate: new Date('2020-05-23')},
+  {
+    id: undefined,
+    title: 'install NodeJS',
+    dueDate: new Date('2020-05-23'),
+    completed: false,
+  },
 ];
 
 @Injectable({
@@ -13,35 +18,63 @@ const defaultTodoList: TodoItem[] = [
 })
 export class TodoListService {
 
-  todoList: TodoItem[];
+  private readonly todoList: TodoItem[] = [];
 
   constructor(private storageService: StorageService) {
-    this.todoList = storageService.getData(todoListStorageKey) || defaultTodoList;
+    let initialData = storageService.getData<TodoItem[]>(todoListStorageKey);
+    if (!initialData || initialData.length === 0) {
+      initialData = [];
+      for (const todoItem of defaultTodoList) {
+        initialData.push(this.createItem(todoItem));
+      }
+    }
+
+    this.todoList = initialData;
   }
 
-  todoItemCreate(todoItem: TodoItem): void {
-    this.todoList.push(todoItem);
-    this.saveList();
-  }
-
-  getTodoList() {
+  getTodoList(): TodoItem[] {
     return this.todoList;
   }
 
-  updateItem(item: TodoItem, changes: { completed: boolean }) {
-    const index = this.todoList.indexOf(item);
-    this.todoList[index] = {...item, ...changes};
+  createItem(todoItem: TodoItem): TodoItem {
+    const newTodoItem = {...todoItem, id: new Date().toISOString()};
+    this.todoList.push(newTodoItem);
     this.saveList();
+
+    return newTodoItem;
   }
 
-  saveList() {
+  updateItem(item: TodoItem): void {
+    if (!item.id) {
+      console.warn('Cannot save item without ID', item);
+    }
+
+    const index = this.findIndex(item);
+    if (index >= 0) {
+      this.todoList[index] = item;
+      this.saveList();
+    }
+  }
+
+  deleteItem(item: TodoItem): void {
+    if (!item.id) {
+      console.warn('Cannot delete item without ID', item);
+    }
+
+    const index = this.findIndex(item);
+    if (index >= 0) {
+      this.todoList.splice(index, 1);
+      this.saveList();
+    }
+  }
+
+  private findIndex(itemToFind: TodoItem): number {
+    return this.todoList.findIndex(todoItemInList => todoItemInList.id === itemToFind.id);
+  }
+
+  private saveList(): void {
     this.storageService.setData(todoListStorageKey, this.todoList);
   }
 
-  deleteItem(item: TodoItem) {
-    const index = this.todoList.indexOf(item);
-    this.todoList.splice(index, 1);
-    this.saveList();
-  }
 }
 

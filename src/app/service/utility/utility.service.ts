@@ -6,8 +6,22 @@ import { Injectable } from '@angular/core';
 export class UtilityService {
 
   public getCurrentDateString(): string {
-    const date = new Date();
-    return `${date.getFullYear()}-${this.formatNumber(date.getMonth() + 1)}-${this.formatNumber(date.getDate())}`;
+    return this.formatDate(new Date());
+  }
+
+  public formatDate(value: Date | string): string {
+    if (value) {
+      let date: Date;
+      if (typeof value === 'string') {
+        date = new Date(value);
+      } else {
+        date = value;
+      }
+
+      return `${date.getFullYear()}-${this.formatNumber(date.getMonth() + 1)}-${this.formatNumber(date.getDate())}`;
+    }
+
+    return '';
   }
 
   public formatNumber(value: number): string {
@@ -20,13 +34,13 @@ export class UtilityService {
   public isDateBefore(value1: any, value2: any): boolean {
     const date1 = new Date(value1);
     if (isNaN(date1.getTime())) {
-      console.log('warning this is not a number');
+      console.warn('this is not a number', date1);
       return false;
     }
 
     const date2 = new Date(value2);
     if (isNaN(date2.getTime())) {
-      console.log('warning this is not a number');
+      console.warn('this is not a number', date2);
       return false;
     }
 

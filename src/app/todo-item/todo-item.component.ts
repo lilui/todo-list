@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoItem } from '../interfaces/todo-item';
 import { UtilityService } from '../service/utility/utility.service';
-import { TodoItemChange } from '../interfaces/todo-item-change';
 
 @Component({
   selector: 'app-todo-item',
@@ -10,40 +9,60 @@ import { TodoItemChange } from '../interfaces/todo-item-change';
 })
 export class TodoItemComponent {
 
-  @Input() item: TodoItem | undefined;
+  @Output() todoItemChange = new EventEmitter<TodoItem | undefined>();
+  @Output() todoItemRemove = new EventEmitter<TodoItem | undefined>();
 
-  @Output() remove = new EventEmitter<TodoItem>();
-
-  @Output() update = new EventEmitter<TodoItemChange>();
+  isItemEditEnabled = false;
 
   private readonly today = new Date();
-  editBool = false;
+
+  private todoItemValue: TodoItem | undefined = undefined;
 
   constructor(private utilityService: UtilityService) {
-
   }
 
-  public isItemDelayed(): boolean {
-    return this.item !== undefined && this.utilityService.isDateBefore(this.item.dueDate, this.today);
+  @Input()
+  public set todoItem(todoItem: TodoItem | undefined) {
+    this.todoItemValue = todoItem;
+    this.todoItemChange.emit(this.todoItemValue);
+  }
+
+  public get todoItem(): TodoItem | undefined {
+    return this.todoItemValue;
+  }
+
+  isItemDelayed(): boolean {
+    return this.todoItemValue !== undefined && this.utilityService.isDateBefore(this.todoItemValue.dueDate, this.today);
+  }
+
+  onTodoItemChange(todoItem: TodoItem) {
+    if (this.todoItemValue !== todoItem) {
+      this.disableItemEdit();
+      this.todoItem = todoItem;
+    }
   }
 
   removeItem() {
-    this.remove.emit(this.item);
+    this.todoItemRemove.emit(this.todoItemValue);
   }
 
-  completeItem() {
-    if (!this.item) {
-      console.log('completeItem item undefined');
+  toggleItemComplete() {
+    if (!this.todoItemValue) {
       return;
     }
-    this.update.emit({
-      item: this.item,
-      changes: {completed: !this.item.completed},
-    });
 
+    this.todoItem = {
+      ...this.todoItemValue,
+      completed: !this.todoItemValue?.completed,
+    };
   }
 
-  editItem() {
-    this.editBool = true;
+  enableItemEdit() {
+    this.isItemEditEnabled = true;
+  }
+
+  disableItemEdit() {
+    console.log('disable item edit');
+    this.isItemEditEnabled = false;
   }
 }

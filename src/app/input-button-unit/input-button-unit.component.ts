@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UtilityService } from '../service/utility/utility.service';
 import { TodoItem } from '../interfaces/todo-item';
@@ -10,28 +10,52 @@ import { TodoItem } from '../interfaces/todo-item';
 })
 export class InputButtonUnitComponent {
 
-  @Output() todoItemCreate = new EventEmitter<TodoItem>();
+  @Output() todoItemChange = new EventEmitter<TodoItem | undefined>();
+  @Output() todoItemSave = new EventEmitter<TodoItem | undefined>();
 
   formGroup: FormGroup;
 
-  constructor(formBuilder: FormBuilder, utilityService: UtilityService) {
+  private todoItemValue: TodoItem | undefined = undefined;
+
+  constructor(formBuilder: FormBuilder,
+              private readonly utilityService: UtilityService) {
     this.formGroup = formBuilder.group({
-      name: ['Hello World', Validators.required],
+      name: ['', Validators.required],
       dueDate: [utilityService.getCurrentDateString(), Validators.required],
     });
   }
 
-  changeTitle() {
-    const dueDate = new Date(this.formGroup.value.dueDate);
-    const todoItem: TodoItem = {
-      completed: false,
-      dueDate,
-      title: this.formGroup.value.name,
-    };
-    this.todoItemCreate.emit(todoItem);
+  @Input()
+  set todoItem(todoItem: TodoItem | undefined) {
+    this.todoItemValue = todoItem;
+
+    if (this.todoItemValue) {
+      this.formGroup.setValue({
+        name: this.todoItemValue.title,
+        dueDate: this.utilityService.formatDate(this.todoItemValue.dueDate),
+      });
+    }
+
+    this.todoItemChange.emit(this.todoItemValue);
   }
 
-  isInvalidControl(formControl: AbstractControl): boolean {
+  get todoItem(): TodoItem | undefined {
+    return this.todoItemValue;
+  }
+
+  hasErrorMessage(formControl: AbstractControl): boolean {
     return formControl.touched && formControl.invalid;
+  }
+
+  save() {
+    const dueDate = new Date(this.formGroup.value.dueDate);
+    this.todoItem = {
+      id: this.todoItemValue ? this.todoItemValue.id : undefined, // ternary operator
+      title: this.formGroup.value.name,
+      dueDate,
+      completed: this.todoItemValue && this.todoItemValue.completed,
+    };
+
+    this.todoItemSave.emit(this.todoItemValue);
   }
 }

@@ -1,5 +1,6 @@
 export interface TodoItem {
-  title: string;
-  dueDate: Date | string;
-  completed?: boolean;
+  readonly id: string | undefined;
+  readonly title: string;
+  readonly dueDate: Date | string;
+  readonly completed?: boolean;
 }
