@@ -40,14 +40,15 @@ export class TodoListService {
 
   createItem(todoItem: TodoItem): TodoItem {
     const newTodoItem = {...todoItem, id: this.createId()};
-    this.todoList.next(this.existingTodoItems.concat(newTodoItem));
-    this.saveList();
+    const updatedItems = this.existingTodoItems.concat(newTodoItem);
+    this.todoList.next(updatedItems);
+    this.saveList(updatedItems);
 
     return newTodoItem;
   }
 
   private get existingTodoItems() {
-    return this.todoList.value || [];
+    return this.todoList.value ? this.todoList.value.slice() : [];
   }
 
   updateItem(item: TodoItem): void {
@@ -55,10 +56,11 @@ export class TodoListService {
       console.warn('Cannot save item without ID', item);
     }
 
-    const index = this.findIndex(item);
+    const updatedItems = this.existingTodoItems;
+    const index = this.findIndex(item, updatedItems);
     if (index >= 0) {
-      this.existingTodoItems[index] = item;
-      this.saveList();
+      updatedItems[index] = item;
+      this.saveList(updatedItems);
     }
   }
 
@@ -66,11 +68,12 @@ export class TodoListService {
     if (!item.id) {
       console.warn('Cannot delete item without ID', item);
     }
-
-    const index = this.findIndex(item);
+    const updatedItems = this.existingTodoItems;
+    const index = this.findIndex(item, updatedItems);
     if (index >= 0) {
-      this.existingTodoItems.splice(index, 1);
-      this.saveList();
+      console.log('existingTodoItems[index]', updatedItems[index]);
+      updatedItems.splice(index, 1);
+      this.saveList(updatedItems);
     }
   }
 
@@ -78,13 +81,16 @@ export class TodoListService {
     return new Date().toISOString();
   }
 
-  private findIndex(itemToFind: TodoItem): number {
-    return this.existingTodoItems.findIndex(todoItemInList => todoItemInList.id === itemToFind.id);
+  private findIndex(itemToFind: TodoItem, todoItems: TodoItem[]): number {
+    const index = todoItems.findIndex(todoItemInList => todoItemInList.id === itemToFind.id);
+    console.log('index', index, 'itemToFind', itemToFind);
+    return index;
   }
 
-  private saveList(): void {
-    this.storageService.setData(todoListStorageKey, this.existingTodoItems);
+  private saveList(todoItems: TodoItem[]): void {
+    this.storageService.setData(todoListStorageKey, todoItems);
     // emit new list
+    this.todoList.next(todoItems);
   }
 
 }

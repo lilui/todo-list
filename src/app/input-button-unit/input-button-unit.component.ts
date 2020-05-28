@@ -57,5 +57,9 @@ export class InputButtonUnitComponent {
     };
 
     this.todoItemSave.emit(this.todoItemValue);
+    // patchValue() updated nur einen Teil der Werte im Formular, setValue() updated alle Werte
+    this.formGroup.patchValue({
+      name: '',
+    });
   }
 }
