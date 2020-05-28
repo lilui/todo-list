@@ -9,9 +9,6 @@
         class="todo-title"
         [class.todo-complete]="todoItemValue.completed"
         (click)="enableItemEdit()">
-    <!-- TODO: enable editing through clicking on title -->
-    <!-- TODO: *ngIf (click) change element <input> to <app-input-button-unit> -->
-    <!-- TODO: catch submit event and update the title -->
     {{ todoItemValue.title }}
   </span>
   <ng-template #itemEditView>

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { TodoItem } from '../../interfaces/todo-item';
 import { StorageService } from '../storage/storage.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 const todoListStorageKey = 'Todo_List';
 
@@ -18,7 +20,7 @@ const defaultTodoList: TodoItem[] = [
 })
 export class TodoListService {
 
-  private readonly todoList: TodoItem[] = [];
+  private readonly todoList = new BehaviorSubject<TodoItem[]>([]);
 
   constructor(private storageService: StorageService) {
     let initialData = storageService.getData<TodoItem[]>(todoListStorageKey);
@@ -29,19 +31,23 @@ export class TodoListService {
       }
     }
 
-    this.todoList = initialData;
+    this.todoList.next(initialData);
   }
 
-  getTodoList(): TodoItem[] {
-    return this.todoList;
+  getTodoList(): Observable<TodoItem[]> {
+    return this.todoList.pipe(map(items => items.slice()));
   }
 
   createItem(todoItem: TodoItem): TodoItem {
-    const newTodoItem = {...todoItem, id: new Date().toISOString()};
-    this.todoList.push(newTodoItem);
+    const newTodoItem = {...todoItem, id: this.createId()};
+    this.todoList.next(this.existingTodoItems.concat(newTodoItem));
     this.saveList();
 
     return newTodoItem;
+  }
+
+  private get existingTodoItems() {
+    return this.todoList.value || [];
   }
 
   updateItem(item: TodoItem): void {
@@ -51,7 +57,7 @@ export class TodoListService {
 
     const index = this.findIndex(item);
     if (index >= 0) {
-      this.todoList[index] = item;
+      this.existingTodoItems[index] = item;
       this.saveList();
     }
   }
@@ -63,17 +69,22 @@ export class TodoListService {
 
     const index = this.findIndex(item);
     if (index >= 0) {
-      this.todoList.splice(index, 1);
+      this.existingTodoItems.splice(index, 1);
       this.saveList();
     }
   }
 
+  private createId(): string {
+    return new Date().toISOString();
+  }
+
   private findIndex(itemToFind: TodoItem): number {
-    return this.todoList.findIndex(todoItemInList => todoItemInList.id === itemToFind.id);
+    return this.existingTodoItems.findIndex(todoItemInList => todoItemInList.id === itemToFind.id);
   }
 
   private saveList(): void {
-    this.storageService.setData(todoListStorageKey, this.todoList);
+    this.storageService.setData(todoListStorageKey, this.existingTodoItems);
+    // emit new list
   }
 
 }

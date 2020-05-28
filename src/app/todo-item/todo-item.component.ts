@@ -35,7 +35,7 @@ export class TodoItemComponent {
     return this.todoItemValue !== undefined && this.utilityService.isDateBefore(this.todoItemValue.dueDate, this.today);
   }
 
-  onTodoItemChange(todoItem: TodoItem) {
+  onTodoItemChange(todoItem: TodoItem | undefined) {
     if (this.todoItemValue !== todoItem) {
       this.disableItemEdit();
       this.todoItem = todoItem;
