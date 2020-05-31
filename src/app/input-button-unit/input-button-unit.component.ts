@@ -61,5 +61,6 @@ export class InputButtonUnitComponent {
     this.formGroup.patchValue({
       name: '',
     });
+    this.formGroup.markAsUntouched();
   }
 }
