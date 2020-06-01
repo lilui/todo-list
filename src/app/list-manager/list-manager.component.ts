@@ -11,7 +11,8 @@ import { Subscription } from 'rxjs';
 })
 export class ListManagerComponent implements OnInit, OnDestroy {
 
-  todoList: TodoItem[] = [];
+  uncompletedList: TodoItem[] = [];
+  completedList: TodoItem[] = [];
   private todoListSub: Subscription | undefined;
 
   constructor(private todoListService: TodoListService) {
@@ -23,9 +24,22 @@ export class ListManagerComponent implements OnInit, OnDestroy {
         finalize(() => console.log('completed')),
       )
       .subscribe(
-        (value) => this.todoList = value,
+        (value) => this.uncompletedList = value,
         (error) => console.error('Error while subscribing', error),
       ); // subscribe to observable and delete subscription
+    this.isCompletedCheck(this.uncompletedList);
+  }
+
+  isCompletedCheck(uncompletedList: TodoItem[]) {
+    if (uncompletedList) {
+      for (let i = 0; i < uncompletedList.length; i++) {
+        if (uncompletedList[i].completed) {
+          this.completedList.push(uncompletedList[i]);
+          this.uncompletedList.slice(i);
+          console.log('completed list: ', this.completedList[i], 'uncompleted list', this.completedList[i]);
+        }
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -43,6 +57,7 @@ export class ListManagerComponent implements OnInit, OnDestroy {
   updateItem(todoItem: TodoItem | undefined) {
     if (todoItem) {
       this.todoListService.updateItem(todoItem);
+      this.isCompletedCheck(this.uncompletedList);
     }
   }
 
