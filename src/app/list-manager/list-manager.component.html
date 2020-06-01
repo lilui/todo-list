@@ -1,11 +1,19 @@
 <div class="todo-app">
   <app-input-button-unit (todoItemChange)="createItem($event)"></app-input-button-unit>
-
+  <h4>Open Todos</h4>
   <ul>
-    <li *ngFor="let todoItem of todoList">
+    <li *ngFor="let todoItem of uncompletedList">
       <app-todo-item [todoItem]="todoItem"
                      (todoItemRemove)="removeItem($event)"
                      (todoItemChange)="updateItem($event)"></app-todo-item>
+    </li>
+  </ul>
+  <h4>Completed Items</h4>
+  <ul>
+    <li *ngFor="let todoItem of completedList">
+      <app-todo-item [todoItem]="todoItem"
+                     (todoItemChange)="updateItem($event)"
+                     (todoItemRemove)="removeItem($event)"></app-todo-item>
     </li>
   </ul>
 </div>
